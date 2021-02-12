@@ -1,36 +1,40 @@
-package com.universitySubjects.entities;
+package com.universities.entities;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.List;
-
 @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class,property = "@uid")
-@Entity(name="Major")
-@Table(name="majors")
-public class Major {
+@Entity(name="University")
+@Table(name="universities")
+public class University {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name="name", unique = true)
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name="university_id")
-    private University university;
+    @OneToMany
+    @JoinColumn(name = "university_id")
+    private List<Major> majors;
 
     @OneToMany
-    @JoinColumn(name="major_id")
+    @JoinColumn(name = "university_id")
     private List<Student> students;
 
-    public Major(){
+    public University(){
 
     }
 
-    public Major(Long id, String name, University university) {
+    public University(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.university = university;
+    }
+
+    public University(String name) {
+        this.name = name;
     }
 
     public Long getId() {
@@ -49,11 +53,19 @@ public class Major {
         this.name = name;
     }
 
-    public University getUniversity() {
-        return university;
+    public List<Major> getMajors() {
+        return majors;
     }
 
-    public void setUniversity(University university) {
-        this.university = university;
+    public void setMajors(List<Major> majors) {
+        this.majors = majors;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 }
