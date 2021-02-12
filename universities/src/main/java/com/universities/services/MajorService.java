@@ -39,6 +39,10 @@ public class MajorService {
     }
 
    public List<Subject> getSubjectsByMajorId(Long majorId){
-        return repository.getSubjectsByMajorId(majorId);
+        List<Subject> subjects = repository.getSubjectsByMajorId(majorId);
+        if(subjects.isEmpty()){
+            throw new IllegalStateException("This major does not have subjects.");
+        }
+        return subjects;
    }
 }

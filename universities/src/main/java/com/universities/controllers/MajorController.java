@@ -51,8 +51,11 @@ public class MajorController {
 
     @GetMapping(path = "{majorId}/subjects")
     public List<Subject> getMajorSubjects(@PathVariable("majorId") Long majorId) {
-        return majorService.getSubjectsByMajorId(majorId);
+        try {
+            return majorService.getSubjectsByMajorId(majorId);
+        } catch (IllegalStateException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
     }
-
-
 }
